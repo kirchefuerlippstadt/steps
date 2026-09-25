@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>KFL-STEPS – Was ist dein nächster Schritt?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f9f7f6; --surface:rgba(63,79,68,.07); --ink:#171717; --muted:#3f4f44;
+  --green:#2c3930; --green-ink:#f9f7f6; --gold:#8d5637; --tan:#ba8b68; --gold-soft:rgba(186,139,104,.20);
+  --line:#171717; --line-soft:rgba(63,79,68,.25);
+  --serif:"Playfair Display", "Didot", "Bodoni 72", Georgia, serif;
+  --sans:"Poppins", "Segoe UI", system-ui, -apple-system, sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#171717; --surface:#2c3930; --ink:#f9f7f6; --muted:rgba(249,247,246,.68);
+    --green:#ba8b68; --green-ink:#171717; --gold:#ba8b68; --tan:#8d5637; --gold-soft:rgba(186,139,104,.16);
+    --line:#f9f7f6; --line-soft:rgba(249,247,246,.16);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#171717; --surface:#2c3930; --ink:#f9f7f6; --muted:rgba(249,247,246,.68);
+  --green:#ba8b68; --green-ink:#171717; --gold:#ba8b68; --tan:#8d5637; --gold-soft:rgba(186,139,104,.16);
+  --line:#f9f7f6; --line-soft:rgba(249,247,246,.16);
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased}
+main{max-width:720px;margin:0 auto;padding:32px 20px 56px}
+h2{font-family:var(--serif);font-weight:500;font-size:1.6rem;line-height:1.2;margin:32px 0 12px}
+p{margin:0 0 14px;max-width:62ch}
+a{color:var(--green);text-underline-offset:3px}
+a:focus-visible{outline:3px solid var(--gold);outline-offset:3px;border-radius:4px}
+button{font:inherit;cursor:pointer}
+.hidden{display:none!important}
+.muted{color:var(--muted)}
+.small{font-size:.9rem}
+.btn{display:inline-flex;align-items:center;gap:10px;border:0;border-radius:999px;padding:13px 26px;font-weight:600;font-size:1rem;background:var(--green);color:var(--green-ink);text-decoration:none}
+.btn.ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line-soft)}
+.btn:focus-visible,.link:focus-visible,.daycard:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.btn svg{width:18px;height:18px;flex:none}
+.link{background:none;border:0;color:var(--muted);text-decoration:underline;padding:6px 0;font-size:.95rem}
+.nav{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:28px}
+
+/* Kopf */
+.brand{display:flex;align-items:center;gap:14px;margin:0 0 28px}
+.logo-top{height:64px;width:auto;color:var(--muted);flex:none}
+.brand-name{font-weight:600;font-size:.95rem;line-height:1.3;letter-spacing:.02em;color:var(--muted)}
+.brand-name span{font-weight:400}
+.theme-toggle{margin-left:auto;flex:none;width:44px;height:44px;border-radius:50%;border:1.5px solid var(--line-soft);background:var(--surface);color:var(--ink);display:grid;place-items:center;padding:0;cursor:pointer}
+.theme-toggle:hover{border-color:var(--gold)}
+.theme-toggle:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.theme-toggle svg{width:20px;height:20px;grid-area:1/1}
+.theme-toggle .ic-sun{display:none}
+.theme-toggle.is-dark .ic-sun{display:block}
+.theme-toggle.is-dark .ic-moon{display:none}
+.hubbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:-8px 0 22px;font-size:.88rem;color:var(--muted);min-height:44px}
+.hubbar .link{padding:4px 0}
+.hubright{display:flex;gap:14px;align-items:center}
+.hubright .theme-toggle{margin-left:4px}
+
+.title-big{font-family:var(--serif);font-weight:700;font-size:clamp(3.2rem,14vw,6.2rem);line-height:.95;letter-spacing:.01em;margin:0 0 22px}
+.subtitle{font-family:var(--serif);font-weight:500;font-size:clamp(1.3rem,4.5vw,1.8rem);line-height:1.2;margin:0 0 16px}
+.steps-hint{font-size:.88rem;color:var(--muted);margin:0 0 22px}
+.steps-hint a{color:inherit}
+.meta{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:0 0 22px;max-width:460px}
+.meta div{font-size:.9rem;color:var(--muted)}
+.meta strong{display:block;font-family:var(--serif);font-size:1.8rem;color:var(--ink);font-weight:700;line-height:1.1}
+
+/* Tageskarten */
+.daylist{display:grid;gap:12px;margin:26px 0}
+.daycard{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center;text-align:left;width:100%;background:var(--surface);color:var(--ink);border:1.5px solid transparent;border-radius:16px;padding:18px 22px}
+.daycard:hover{border-color:var(--gold)}
+.daynum{font-family:var(--serif);font-weight:700;font-size:2.6rem;line-height:1;color:var(--gold);min-width:1em;text-align:center}
+.daybody{display:flex;flex-direction:column;gap:4px}
+.daytitle{font-family:var(--serif);font-size:1.3rem;line-height:1.2}
+.daymeta{display:flex;gap:12px;align-items:center;flex-wrap:wrap;font-size:.82rem;color:var(--muted)}
+.pill{border-radius:99px;padding:3px 10px;font-weight:600;box-shadow:inset 0 0 0 1.5px var(--line-soft)}
+.pill.done{background:var(--green);color:var(--green-ink);box-shadow:none}
+.daycard.next{border-color:var(--green)}
+.pill.next{background:var(--gold-soft);box-shadow:none;color:var(--ink)}
+
+/* Tagesseite */
+.video{position:relative;aspect-ratio:16/9;width:100%;border-radius:14px;overflow:hidden;background:var(--green);color:var(--green-ink)}
+.video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.yt-load{position:absolute;inset:0;width:100%;height:100%;border:0;background:transparent;color:inherit;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:18px;text-align:center;cursor:pointer;font:inherit}
+.yt-load:focus-visible{outline:3px solid var(--gold);outline-offset:-6px}
+.yt-play{width:64px;height:64px;border-radius:50%;background:var(--green-ink);color:var(--green);display:grid;place-items:center;transition:transform .15s}
+.yt-play svg{width:28px;height:28px;margin-left:3px}
+.yt-load:hover .yt-play{transform:scale(1.06)}
+.yt-title{font-family:var(--serif);font-size:1.25rem;line-height:1.2}
+.yt-dur{font-size:.85rem;opacity:.85;margin-top:-4px}
+.yt-note{font-size:.75rem;opacity:.75;max-width:34ch;line-height:1.4}
+.pdfbox{background:var(--gold-soft);border-radius:14px;padding:20px 22px;margin:16px 0 0}
+.pdfbox p{margin:0 0 16px}
+.pdfbox strong{font-weight:600}
+.donebox{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:26px}
+.check{display:inline-flex;align-items:center;gap:10px;cursor:pointer;font-weight:500}
+.check input{width:22px;height:22px;accent-color:var(--green);margin:0}
+
+/* Footer */
+.sitefoot{margin-top:56px;padding-top:24px;border-top:1.5px solid var(--line-soft);font-size:.9rem;color:var(--muted)}
+.sitefoot p{margin:0 0 10px}
+.sitefoot .btn{margin-top:6px;padding:9px 18px;font-size:.92rem}
+.foot-logo{display:inline-flex;align-items:center;gap:10px;color:var(--muted);text-decoration:none;font-weight:600;margin-bottom:14px}
+.logo-foot{height:36px;width:auto;color:var(--muted)}
+@media (max-width:420px){ .yt-note{display:none} .yt-play{width:54px;height:54px} }
+@media (max-width:480px){ .nav .btn{padding:12px 16px;font-size:.92rem} }
+@media (max-width:380px){ .nav{gap:8px} .nav .btn{padding:11px 13px;font-size:.86rem} }
+@media (prefers-reduced-motion:reduce){ *{transition:none!important} }
+
+.lead{font-family:var(--serif);font-weight:500;font-size:clamp(1.5rem,5vw,2rem);line-height:1.2;margin:34px 0 16px}
+.benefits{list-style:none;padding:0;margin:0 0 30px;display:grid;gap:10px}
+.benefits li{display:flex;align-items:center;gap:12px;font-size:1.02rem}
+.benefits .ck{flex:none;width:28px;height:28px;border-radius:50%;background:var(--green);color:var(--green-ink);display:grid;place-items:center}
+.benefits .ck svg{width:16px;height:16px}
+.courselist{display:grid;gap:14px;margin:0 0 10px}
+.course{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center;text-decoration:none;color:var(--ink);background:var(--surface);border:1.5px solid transparent;border-radius:18px;padding:22px 22px 20px}
+.course:hover{border-color:var(--gold)}
+.course:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.cnum{font-family:var(--serif);font-weight:700;font-size:2.8rem;line-height:1;color:var(--gold);min-width:1em;text-align:center;align-self:start}
+.cbody{display:flex;flex-direction:column;gap:4px}
+.cname{font-family:var(--serif);font-weight:700;font-size:1.7rem;line-height:1.1;letter-spacing:.02em}
+.csub{color:var(--muted);font-size:.98rem;line-height:1.35}
+.cmeta{font-size:.82rem;color:var(--muted);margin-top:4px}
+.cgo{display:inline-flex;align-items:center;gap:8px;margin-top:12px;align-self:flex-start;background:var(--green);color:var(--green-ink);border-radius:999px;padding:9px 18px;font-weight:600;font-size:.92rem}
+.cgo svg{width:16px;height:16px}
+</style>
+<script>try{var t=localStorage.getItem("ob-theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
+</head>
+<body>
+<main>
+  <div class="brand"><svg class="logo-top" viewBox="0 0 1000 1720" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Kirche für Lippstadt"> <g transform="translate(0.000000,1720.000000) scale(0.100000,-0.100000)" fill="currentColor" stroke="none"> <path d="M4670 17190 c-2360 -170 -4272 -1939 -4614 -4270 -54 -368 -51 -99 -50 -4310 1 -4081 -1 -3967 45 -4300 241 -1742 1396 -3239 3028 -3924 905 -380 1942 -482 2910 -285 2083 422 3689 2141 3960 4239 41 313 41 336 44 4315 2 4107 4 3911 -44 4250 -305 2158 -1996 3881 -4149 4230 -331 53 -820 77 -1130 55z m40 -1419 l0 -839 -87 -12 c-431 -59 -890 -251 -1236 -517 l-59 -46 -599 599 c-329 329 -599 602 -599 606 0 4 50 47 111 95 496 395 1072 681 1675 831 256 64 586 118 737 121 l57 1 0 -839z m946 804 c727 -107 1410 -393 1999 -835 72 -54 150 -116 175 -138 l45 -41 -601 -602 -602 -602 -59 46 c-350 269 -837 470 -1265 522 l-58 7 0 841 0 840 101 -7 c55 -4 174 -18 265 -31z m-2778 -2681 c-271 -355 -460 -805 -519 -1236 l-12 -88 -874 0 -873 0 0 33 c0 116 60 468 120 703 165 647 492 1274 925 1777 l68 79 605 -605 605 -605 -45 -58z m5608 1032 c523 -671 815 -1402 919 -2303 l6 -53 -879 0 -879 0 -12 88 c-58 421 -257 895 -518 1235 l-46 59 604 605 604 604 58 -63 c32 -35 96 -112 143 -172z m-3226 -571 c1048 -130 1830 -1016 1830 -2075 0 -881 -536 -1655 -1361 -1963 -453 -170 -1002 -170 -1456 -1 -572 213 -1024 665 -1237 1236 -143 385 -166 844 -61 1254 259 1013 1239 1678 2285 1549z m-2906 -2424 c46 -408 239 -885 501 -1235 l66 -90 -1170 -1170 -1171 -1171 0 1863 0 1862 884 0 883 0 7 -59z m7066 -2306 l0 -2365 -875 0 -875 0 0 2365 0 2365 875 0 875 0 0 -2365z m-1171 -2935 c826 0 1162 -3 1167 -11 3 -6 3 -339 -1 -741 -7 -666 -9 -729 -24 -725 -9 3 -94 39 -190 81 -622 272 -1214 455 -1610 497 -156 16 -496 6 -667 -20 -480 -74 -886 -211 -1556 -524 l-78 -36 0 2207 0 2208 118 17 c504 73 996 310 1394 671 92 83 265 270 278 299 3 7 6 -873 8 -1955 l2 -1968 1159 0z m-4832 3444 c350 -261 830 -456 1231 -500 l62 -7 0 -2352 0 -2353 -72 -37 c-40 -21 -194 -104 -343 -185 -148 -81 -314 -171 -369 -200 l-98 -53 -1564 1564 -1564 1564 1312 1312 c722 722 1314 1313 1315 1313 0 0 41 -30 90 -66z m-157 -5935 c0 -8 -198 -65 -315 -90 -167 -35 -388 -37 -546 -5 -443 90 -1026 342 -1704 737 l-110 64 -3 990 -2 990 1340 -1340 c737 -737 1340 -1343 1340 -1346z m4375 1001 c406 -70 1028 -285 1637 -566 l128 -58 -5 -36 c-56 -429 -125 -727 -240 -1045 -50 -136 -149 -374 -162 -386 -5 -4 -87 24 -183 62 -927 368 -1494 429 -2251 243 -520 -127 -1313 -477 -2264 -998 -819 -449 -1142 -578 -1544 -618 -232 -22 -495 32 -899 184 l-133 51 -62 71 c-424 486 -747 1090 -917 1715 -40 144 -92 373 -86 378 2 2 45 -20 97 -48 906 -493 1538 -689 2065 -640 519 48 936 210 1769 685 306 175 824 439 1165 594 601 272 1028 400 1465 436 100 8 303 -3 420 -24z m76 -2299 c283 -59 989 -285 989 -316 0 -5 -40 -65 -88 -132 -743 -1039 -1801 -1673 -3077 -1845 -230 -31 -805 -33 -1035 -5 -610 76 -1180 262 -1684 550 l-109 62 129 12 c512 49 909 205 1774 698 271 154 871 458 1165 590 549 247 953 371 1365 419 126 15 428 -3 571 -33z"/> </g> </svg><span class="brand-name">Kirche für Lippstadt<br><span>KFL-STEPS</span></span><button type="button" class="theme-toggle" aria-label="Zum dunklen Modus wechseln" title="Hell / Dunkel">
+      <svg class="ic-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5a8.5 8.5 0 1 0 10.7 10.7Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      <svg class="ic-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.8"/><g stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></g></svg>
+    </button></div>
+  <div class="title-big">STEPS</div>
+
+  <div class="video" data-yt="D0-f3srDcVA">
+    <button type="button" class="yt-load" aria-label="Einführungsvideo zu den STEPS abspielen"><span class="yt-play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></svg></span><span class="yt-title">Einführung in die STEPS</span><span class="yt-dur">Einführungsvideo</span><span class="yt-note">Zum Abspielen wird das Video von YouTube geladen. Dabei werden Daten an YouTube (Google) übertragen.</span></button>
+  </div>
+
+  <h2 class="lead">Was ist dein nächster Schritt?</h2>
+  <ul class="benefits"><li><span class="ck"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Online-Kurs zu jedem Step</li><li><span class="ck"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>100 % kostenlos</li><li><span class="ck"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Ohne Anmeldung</li><li><span class="ck"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>In deinem Tempo</li><li><span class="ck"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Einmal tippen – schon geht’s los!</li></ul>
+
+  <div class="courselist">
+      <a class="course" href="https://discover.kirchefuerlippstadt.de/">
+        <span class="cnum" aria-hidden="true">1</span>
+        <span class="cbody">
+          <span class="cname">DISCOVER</span>
+          <span class="csub">Entdecke deine Spiritualität</span>
+          <span class="cmeta">5 Tage · kurze Videos + PDFs</span>
+          <span class="cgo">Kurs starten <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </span>
+      </a>
+      <a class="course" href="https://basic.kirchefuerlippstadt.de/">
+        <span class="cnum" aria-hidden="true">2</span>
+        <span class="cbody">
+          <span class="cname">BASIC</span>
+          <span class="csub">Grundlagen des christlichen Glaubens</span>
+          <span class="cmeta">4 Videos · ca. 94 Min.</span>
+          <span class="cgo">Kurs starten <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </span>
+      </a>
+      <a class="course" href="https://onboarding.kirchefuerlippstadt.de/">
+        <span class="cnum" aria-hidden="true">3</span>
+        <span class="cbody">
+          <span class="cname">ONBOARDING</span>
+          <span class="csub">Entdecke deine Berufung und entfalte dein Potenzial</span>
+          <span class="cmeta">3 Module · Videos, Tests & dein Visionssatz</span>
+          <span class="cgo">Kurs starten <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </span>
+      </a>
+  </div>
+
+  <footer class="sitefoot">
+    <a class="foot-logo" href="https://kirchefuerlippstadt.de" target="_blank" rel="noopener"><svg class="logo-foot" viewBox="0 0 1000 1720" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"> <g transform="translate(0.000000,1720.000000) scale(0.100000,-0.100000)" fill="currentColor" stroke="none"> <path d="M4670 17190 c-2360 -170 -4272 -1939 -4614 -4270 -54 -368 -51 -99 -50 -4310 1 -4081 -1 -3967 45 -4300 241 -1742 1396 -3239 3028 -3924 905 -380 1942 -482 2910 -285 2083 422 3689 2141 3960 4239 41 313 41 336 44 4315 2 4107 4 3911 -44 4250 -305 2158 -1996 3881 -4149 4230 -331 53 -820 77 -1130 55z m40 -1419 l0 -839 -87 -12 c-431 -59 -890 -251 -1236 -517 l-59 -46 -599 599 c-329 329 -599 602 -599 606 0 4 50 47 111 95 496 395 1072 681 1675 831 256 64 586 118 737 121 l57 1 0 -839z m946 804 c727 -107 1410 -393 1999 -835 72 -54 150 -116 175 -138 l45 -41 -601 -602 -602 -602 -59 46 c-350 269 -837 470 -1265 522 l-58 7 0 841 0 840 101 -7 c55 -4 174 -18 265 -31z m-2778 -2681 c-271 -355 -460 -805 -519 -1236 l-12 -88 -874 0 -873 0 0 33 c0 116 60 468 120 703 165 647 492 1274 925 1777 l68 79 605 -605 605 -605 -45 -58z m5608 1032 c523 -671 815 -1402 919 -2303 l6 -53 -879 0 -879 0 -12 88 c-58 421 -257 895 -518 1235 l-46 59 604 605 604 604 58 -63 c32 -35 96 -112 143 -172z m-3226 -571 c1048 -130 1830 -1016 1830 -2075 0 -881 -536 -1655 -1361 -1963 -453 -170 -1002 -170 -1456 -1 -572 213 -1024 665 -1237 1236 -143 385 -166 844 -61 1254 259 1013 1239 1678 2285 1549z m-2906 -2424 c46 -408 239 -885 501 -1235 l66 -90 -1170 -1170 -1171 -1171 0 1863 0 1862 884 0 883 0 7 -59z m7066 -2306 l0 -2365 -875 0 -875 0 0 2365 0 2365 875 0 875 0 0 -2365z m-1171 -2935 c826 0 1162 -3 1167 -11 3 -6 3 -339 -1 -741 -7 -666 -9 -729 -24 -725 -9 3 -94 39 -190 81 -622 272 -1214 455 -1610 497 -156 16 -496 6 -667 -20 -480 -74 -886 -211 -1556 -524 l-78 -36 0 2207 0 2208 118 17 c504 73 996 310 1394 671 92 83 265 270 278 299 3 7 6 -873 8 -1955 l2 -1968 1159 0z m-4832 3444 c350 -261 830 -456 1231 -500 l62 -7 0 -2352 0 -2353 -72 -37 c-40 -21 -194 -104 -343 -185 -148 -81 -314 -171 -369 -200 l-98 -53 -1564 1564 -1564 1564 1312 1312 c722 722 1314 1313 1315 1313 0 0 41 -30 90 -66z m-157 -5935 c0 -8 -198 -65 -315 -90 -167 -35 -388 -37 -546 -5 -443 90 -1026 342 -1704 737 l-110 64 -3 990 -2 990 1340 -1340 c737 -737 1340 -1343 1340 -1346z m4375 1001 c406 -70 1028 -285 1637 -566 l128 -58 -5 -36 c-56 -429 -125 -727 -240 -1045 -50 -136 -149 -374 -162 -386 -5 -4 -87 24 -183 62 -927 368 -1494 429 -2251 243 -520 -127 -1313 -477 -2264 -998 -819 -449 -1142 -578 -1544 -618 -232 -22 -495 32 -899 184 l-133 51 -62 71 c-424 486 -747 1090 -917 1715 -40 144 -92 373 -86 378 2 2 45 -20 97 -48 906 -493 1538 -689 2065 -640 519 48 936 210 1769 685 306 175 824 439 1165 594 601 272 1028 400 1465 436 100 8 303 -3 420 -24z m76 -2299 c283 -59 989 -285 989 -316 0 -5 -40 -65 -88 -132 -743 -1039 -1801 -1673 -3077 -1845 -230 -31 -805 -33 -1035 -5 -610 76 -1180 262 -1684 550 l-109 62 129 12 c512 49 909 205 1774 698 271 154 871 458 1165 590 549 247 953 371 1365 419 126 15 428 -3 571 -33z"/> </g> </svg><span>Kirche für Lippstadt</span></a>
+    <p>Die KFL-STEPS sind ein kostenloses und unverbindliches Angebot der <a href="https://kirchefuerlippstadt.de" target="_blank" rel="noopener">Kirche für Lippstadt</a>.</p>
+    <p>Wenn du unsere Arbeit finanziell unterstützt, sind wir dir von Herzen dankbar.</p>
+    <a class="btn ghost" href="https://kirchefuerlippstadt.de/#unterstützen" target="_blank" rel="noopener">Unsere Arbeit unterstützen</a>
+  </footer>
+</main>
+<script>
+(function(){
+  document.addEventListener("click", function(e){
+    var y = e.target.closest(".yt-load"); if (!y) return;
+    var box = y.parentNode, f = document.createElement("iframe");
+    f.src = "https://www.youtube-nocookie.com/embed/" + box.getAttribute("data-yt") + "?autoplay=1&rel=0";
+    f.title = "KFL-STEPS – Einführungsvideo";
+    f.setAttribute("allow","accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share");
+    f.setAttribute("referrerpolicy","strict-origin-when-cross-origin");
+    f.setAttribute("allowfullscreen","");
+    box.innerHTML = ""; box.appendChild(f);
+  });
+  var btns = Array.prototype.slice.call(document.querySelectorAll(".theme-toggle"));
+  var mq = window.matchMedia ? window.matchMedia("(prefers-color-scheme: dark)") : null;
+  function isDark(){ var t = document.documentElement.getAttribute("data-theme"); return t ? t==="dark" : !!(mq && mq.matches); }
+  function sync(){ var d = isDark(); btns.forEach(function(b){ b.classList.toggle("is-dark", d); b.setAttribute("aria-label", d ? "Zum hellen Modus wechseln" : "Zum dunklen Modus wechseln"); }); }
+  btns.forEach(function(b){ b.addEventListener("click", function(){ var next = isDark() ? "light" : "dark"; document.documentElement.setAttribute("data-theme", next); try{ localStorage.setItem("ob-theme", next); }catch(e){} sync(); }); });
+  if (mq && mq.addEventListener) mq.addEventListener("change", sync);
+  sync();
+})();
+</script>
+</body>
+</html>
